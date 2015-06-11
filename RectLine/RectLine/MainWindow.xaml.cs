@@ -21,24 +21,24 @@ namespace RectLine
         {
             InitializeComponent();
         }
+
         bool IsDrawLine = false;
         List<myLine> listLine = new List<myLine>();
-        int stateLine;
-
-        enum EStates : byte { LineOne = 1, LineTwo = 2, LineTree = 3 };
+        EStates stateLine;
+        enum EStates : byte {LineOne = 1, LineTwo, LineTree};
 
         private void btnRectOne_Click(object sender, RoutedEventArgs e)
         {
            myRectangleOne myRectangle = new myRectangleOne();
-           myRectangle.myCvs = this.Cvs;
-           Cvs.Children.Add(myRectangle.myRect);            
+           myRectangle.myCanvas = this.mainCanvas;
+           mainCanvas.Children.Add(myRectangle.myRectangleOnCanvas);            
         }
 
         private void btnRectTwo_Click(object sender, RoutedEventArgs e)
         {
             myRectangleTwo myRectangle = new myRectangleTwo();
-            myRectangle.myCvs = this.Cvs;
-            Cvs.Children.Add(myRectangle.myRect);
+            myRectangle.myCanvas = this.mainCanvas;
+            mainCanvas.Children.Add(myRectangle.myRectangleOnCanvas);
         }
 
         void changeStateLineRectangle()
@@ -48,55 +48,59 @@ namespace RectLine
         }
 
         
-
         private void btnLine_Click(object sender, RoutedEventArgs e)
         {
-            stateLine = (int)EStates.LineOne;
+            stateLine = EStates.LineOne;
             changeStateLineRectangle();
         }
         private void btnLine2_Click(object sender, RoutedEventArgs e)
         {
-            stateLine = (int)EStates.LineTwo;
+            stateLine = EStates.LineTwo;
             changeStateLineRectangle();
         }
 
         private void btnLine3_Click(object sender, RoutedEventArgs e)
         {
-            stateLine = (int)EStates.LineTree;
+            stateLine = EStates.LineTree;
             changeStateLineRectangle();
         }
-       
+
+        private myLine selectTypeLine()
+        {
+            myLine myLineCanvas = null;
+            switch (stateLine)
+            {
+                case EStates.LineOne:
+                    myLineCanvas = new myLineOne();
+                    break;
+
+                case EStates.LineTwo:
+                    myLineCanvas = new myLineTwo();
+                    break;
+
+                default:
+                    myLineCanvas = new myLineTree();
+                    break;
+            }
+            return myLineCanvas;
+        }
 
         private void Cvs_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (IsDrawLine)
             {
-                myLine myL=null;
+                myLine myLineCanvas = selectTypeLine();  
 
-                switch (stateLine)                
-                { 
-                    case 1: 
-                        myL = new myLineOne();
-                        break;
-                    case 2: 
-                        myL = new myLineTwo();
-                        break;
-
-                    default:
-                        myL = new myLineTree();
-                        break;
-                }
-
-                myL.RectOne = returnRectangle(e);
-                Cvs.MouseMove += myL.onMouseMove;
+                myLineCanvas.RectangleOne = returnRectangle(e);
+                mainCanvas.MouseMove += myLineCanvas.onMouseMove;
                 if (returnRectangle(e) != null)
                 {
-                    Cvs.MouseMove += myL.reDrawingLine1;
+                    mainCanvas.MouseMove += myLineCanvas.reDrawingLine1;
                 }
-                myL.myCvs = this.Cvs;
-                myL.onMouseDown(sender, e);
-                Cvs.Children.Add(myL.line);
-                listLine.Add(myL);
+                myLineCanvas.myCanvas = this.mainCanvas;
+                myLineCanvas.onMouseDown(sender, e);
+                mainCanvas.Children.Add(myLineCanvas.linePainted);
+                listLine.Add(myLineCanvas);
             }
         }
 
@@ -109,23 +113,23 @@ namespace RectLine
         public Rectangle returnRectangle(MouseButtonEventArgs e)
         {
             bool IsHaveRectangle = false;
-            double mouseX = e.GetPosition(Cvs).X;
-            double mouseY = e.GetPosition(Cvs).Y;
+            double mouseX = e.GetPosition(mainCanvas).X;
+            double mouseY = e.GetPosition(mainCanvas).Y;
             Rectangle mouseRect = new Rectangle();
-            for (int i = 0; i < Cvs.Children.Count; i++)
+            for (int i = 0; i < mainCanvas.Children.Count; i++)
             {
-                if (typeof(Rectangle) == (Cvs.Children[i].GetType()))
+                if (typeof(Rectangle) == (mainCanvas.Children[i].GetType()))
                 {
-                    double rLeft = Canvas.GetLeft((Rectangle)Cvs.Children[i]);
-                    double rTop = Canvas.GetTop((Rectangle)Cvs.Children[i]);
-                    double rWidht = ((Rectangle)Cvs.Children[i]).Width;
-                    double rHeight = ((Rectangle)Cvs.Children[i]).Height;
-                    bool bInsideByX = mouseX >= rLeft && mouseX <= rLeft + rWidht;
-                    bool bInsideByY = mouseY >= rTop && mouseY <= rTop + rHeight;
+                    double rectanglePocitionLeft = Canvas.GetLeft((Rectangle)mainCanvas.Children[i]);
+                    double rectanglePocitionTop = Canvas.GetTop((Rectangle)mainCanvas.Children[i]);
+                    double rectangleValueWidht = ((Rectangle)mainCanvas.Children[i]).Width;
+                    double rectangleValueHeight = ((Rectangle)mainCanvas.Children[i]).Height;
+                    bool bInsideByX = mouseX >= rectanglePocitionLeft && mouseX <= rectanglePocitionLeft + rectangleValueWidht;
+                    bool bInsideByY = mouseY >= rectanglePocitionTop && mouseY <= rectanglePocitionTop + rectangleValueHeight;
                     
                     if (bInsideByX && bInsideByY)
                     {
-                        mouseRect = (Rectangle)Cvs.Children[i];
+                        mouseRect = (Rectangle)mainCanvas.Children[i];
                         IsHaveRectangle = true;
                     }
                 }
@@ -138,7 +142,7 @@ namespace RectLine
             {
                 return null;
             }
-        }
+         }
 
         private void Cvs_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -146,10 +150,10 @@ namespace RectLine
             {
                 if (listLine[listLine.Count - 1].isDrawing)
                 {
-                    listLine[listLine.Count - 1].RectTwo = returnRectangle(e);
+                    listLine[listLine.Count - 1].RectangleTwo = returnRectangle(e);
                     if (returnRectangle(e) != null)
                     {
-                        Cvs.MouseMove += listLine[listLine.Count - 1].reDrawingLine2;
+                        mainCanvas.MouseMove += listLine[listLine.Count - 1].reDrawingLine2;
                     }
                     listLine[listLine.Count - 1].isDrawing = false;
                 }

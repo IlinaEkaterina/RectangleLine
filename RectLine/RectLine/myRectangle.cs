@@ -17,32 +17,32 @@ namespace RectLine
 {
     class myRectangle
     {
-        public Rectangle myRect;
-        public Canvas myCvs;
+        public Rectangle myRectangleOnCanvas;
+        public Canvas myCanvas;
         protected double _beginX, _beginY, _currX, _currY;
         protected bool _IsMouseDown = false;       
         public static bool IsRectState;
 
         public myRectangle()
-        { 
-            myRect = new Rectangle();
-            myRect.Height = 40;
-            myRect.Width = 80;            
-            myRect.StrokeThickness = 2;            
-            myRect.MouseDown += onMouseDown;
-            myRect.MouseUp += onMouseUp;
-            myRect.MouseMove += onMouseMove;
+        {
+            myRectangleOnCanvas = new Rectangle();
+            myRectangleOnCanvas.Height = 40;
+            myRectangleOnCanvas.Width = 80;
+            myRectangleOnCanvas.StrokeThickness = 2;
+            myRectangleOnCanvas.MouseDown += onMouseDown;
+            myRectangleOnCanvas.MouseUp += onMouseUp;
+            myRectangleOnCanvas.MouseMove += onMouseMove;
         }
 
         protected void onMouseDown(Object sender, MouseButtonEventArgs e)
         {
             if (IsRectState)
             {
-                Rectangle rect = sender as Rectangle;
-                _beginX = e.GetPosition(myCvs).X;
-                _beginY = e.GetPosition(myCvs).Y;
+                Rectangle rectanglePressMouse = sender as Rectangle;
+                _beginX = e.GetPosition(myCanvas).X;
+                _beginY = e.GetPosition(myCanvas).Y;
                 _IsMouseDown = true;
-                rect.CaptureMouse();
+                rectanglePressMouse.CaptureMouse();
             }
         }
 
@@ -50,20 +50,20 @@ namespace RectLine
         {
             if (_IsMouseDown)
             {
-                Rectangle rect = sender as Rectangle;                
-                _currX = e.GetPosition(myCvs).X;
-                _currY = e.GetPosition(myCvs).Y;
-                rect.SetValue(Canvas.LeftProperty, _currX);
-                rect.SetValue(Canvas.TopProperty, _currY);
+                Rectangle rectanglePressMouse = sender as Rectangle;
+                _currX = e.GetPosition(myCanvas).X;
+                _currY = e.GetPosition(myCanvas).Y;
+                rectanglePressMouse.SetValue(Canvas.LeftProperty, _currX);
+                rectanglePressMouse.SetValue(Canvas.TopProperty, _currY);
             }
         }
         protected void onMouseUp(Object sender, MouseButtonEventArgs e)
         {
             _beginY = _currY;
             _beginX = _currX;
-            Rectangle rect = sender as Rectangle;
+            Rectangle rectanglePressMouse = sender as Rectangle;
             _IsMouseDown = false;
-            rect.ReleaseMouseCapture();
+            rectanglePressMouse.ReleaseMouseCapture();
         }
     }
 }

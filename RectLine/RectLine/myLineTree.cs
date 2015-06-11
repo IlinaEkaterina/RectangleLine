@@ -17,11 +17,10 @@ namespace RectLine
 {
     class myLineTree:myLine
     {
-
         public myLineTree()
              :base()
         {
-            line.Stroke = Brushes.Red;
+            linePainted.Stroke = Brushes.Red;
         }
     }
 }

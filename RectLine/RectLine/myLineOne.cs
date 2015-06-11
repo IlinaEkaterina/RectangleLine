@@ -20,7 +20,7 @@ namespace RectLine
         public myLineOne()
              :base()
         {
-            line.Stroke = Brushes.Green;
+            linePainted.Stroke = Brushes.Green;
         }
     }
 }

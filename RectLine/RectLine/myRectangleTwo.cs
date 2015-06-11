@@ -20,12 +20,12 @@ namespace RectLine
          public myRectangleTwo()
             :base()
         {
-            myRect.Fill = System.Windows.Media.Brushes.LawnGreen;
-            myRect.Stroke = Brushes.LimeGreen;
-            myRect.RadiusX = 10;
-            myRect.RadiusY = 10;
-            Canvas.SetLeft(myRect, 40);
-            Canvas.SetTop(myRect, 40);
+            myRectangleOnCanvas.Fill = System.Windows.Media.Brushes.LawnGreen;
+            myRectangleOnCanvas.Stroke = Brushes.LimeGreen;
+            myRectangleOnCanvas.RadiusX = 10;
+            myRectangleOnCanvas.RadiusY = 10;
+            Canvas.SetLeft(myRectangleOnCanvas, 40);
+            Canvas.SetTop(myRectangleOnCanvas, 40);
 
         }
     }

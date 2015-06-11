@@ -20,10 +20,10 @@ namespace RectLine
         public myRectangleOne()
             :base()
         {
-            myRect.Fill = System.Windows.Media.Brushes.SlateBlue;
-            myRect.Stroke = Brushes.DarkSlateBlue;
-            Canvas.SetLeft(myRect, 150);
-            Canvas.SetTop(myRect, 150);
+            myRectangleOnCanvas.Fill = System.Windows.Media.Brushes.SlateBlue;
+            myRectangleOnCanvas.Stroke = Brushes.DarkSlateBlue;
+            Canvas.SetLeft(myRectangleOnCanvas, 150);
+            Canvas.SetTop(myRectangleOnCanvas, 150);
         }
     }
 }

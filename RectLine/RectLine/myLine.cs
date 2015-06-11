@@ -16,26 +16,25 @@ namespace RectLine
 {
     class myLine
     {
-        public Line line;
-        public Canvas myCvs;
+        public Line linePainted;
+        public Canvas myCanvas;
         public bool isDrawing = false;
-        Point point;
-        public Rectangle RectOne;
-        public Rectangle RectTwo;
+        Point pointLine;
+        public Rectangle RectangleOne;
+        public Rectangle RectangleTwo;
         
  
         public myLine()
         {
-            line = new Line();
-            line.StrokeThickness = 2;
+            linePainted = new Line();
+            linePainted.StrokeThickness = 2;
         }
 
         public void onMouseDown(Object sender, MouseButtonEventArgs e)
         {
-
-            point = e.GetPosition(myCvs);
-            line.X1 = line.X2 = point.X;
-            line.Y1 = line.Y2 = point.Y;
+            pointLine = e.GetPosition(myCanvas);
+            linePainted.X1 = linePainted.X2 = pointLine.X;
+            linePainted.Y1 = linePainted.Y2 = pointLine.Y;
             isDrawing = true;
         }
 
@@ -43,23 +42,22 @@ namespace RectLine
         {
             if (isDrawing)
             {
-                Point pointEnd = e.GetPosition(myCvs);
-                line.X2 = pointEnd.X;
-                line.Y2 = pointEnd.Y;
+                Point pointEnd = e.GetPosition(myCanvas);
+                linePainted.X2 = pointEnd.X;
+                linePainted.Y2 = pointEnd.Y;
             }
         }
  
         public void reDrawingLine1(Object sender, MouseEventArgs e)
         {
-             line.X1 = Canvas.GetLeft(RectOne) + RectOne.Width/2;             
-             line.Y1 = Canvas.GetTop(RectOne) + RectOne.Height/2;
-         
+            linePainted.X1 = Canvas.GetLeft(RectangleOne) + RectangleOne.Width / 2;
+            linePainted.Y1 = Canvas.GetTop(RectangleOne) + RectangleOne.Height / 2;         
         }
 
         public void reDrawingLine2(Object sender, MouseEventArgs e)
         {
-            line.X2 = Canvas.GetLeft(RectTwo) + RectTwo.Width / 2;
-            line.Y2 = Canvas.GetTop(RectTwo) + RectTwo.Height / 2;
+            linePainted.X2 = Canvas.GetLeft(RectangleTwo) + RectangleTwo.Width / 2;
+            linePainted.Y2 = Canvas.GetTop(RectangleTwo) + RectangleTwo.Height / 2;
         }
     }
 

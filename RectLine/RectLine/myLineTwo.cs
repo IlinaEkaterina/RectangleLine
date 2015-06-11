@@ -20,7 +20,7 @@ namespace RectLine
         public myLineTwo()
              :base()
         {
-            line.Stroke = Brushes.Black;
+            linePainted.Stroke = Brushes.Black;
         }
     }
 }

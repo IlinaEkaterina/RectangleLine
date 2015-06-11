@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Drawing" Height="450" Width="830">
     <Grid Background="GhostWhite">
-        
-        <Canvas Height="425" Name="Cvs" Background="Lavender" MouseDown="Cvs_MouseDown" MouseUp="Cvs_MouseUp" Margin="0,0,172,0"/>
+
+        <Canvas Height="425" Name="mainCanvas" Background="Lavender" MouseDown="Cvs_MouseDown" MouseUp="Cvs_MouseUp" Margin="0,0,172,0"/>
         <Button Name="btnRectone" Content="Прямоугольник 1" Width="100"  Margin="647,37,20,343" Click="btnRectOne_Click" > </Button>
         <Button Name="btnRecttwo" Content="Прямоугольник 2" Width="100"  Margin="647,84,20,296" Click="btnRectTwo_Click"></Button>
         <Button Name="btnMove" Content="Двигать фигуру" Width="95"  Margin="666,136,38,245" Click="btnMove_Click" />

@@ -25,18 +25,20 @@ namespace RectLine
         List<myLine> listLine = new List<myLine>();
         int stateLine;
 
+        enum EStates : byte { LineOne = 1, LineTwo = 2, LineTree = 3 };
+
         private void btnRectOne_Click(object sender, RoutedEventArgs e)
         {
-           myRectangleOne myR = new myRectangleOne();
-           myR.myCvs = this.Cvs;
-           Cvs.Children.Add(myR.myRect);            
+           myRectangleOne myRectangle = new myRectangleOne();
+           myRectangle.myCvs = this.Cvs;
+           Cvs.Children.Add(myRectangle.myRect);            
         }
 
         private void btnRectTwo_Click(object sender, RoutedEventArgs e)
         {
-            myRectangleTwo myR = new myRectangleTwo();
-            myR.myCvs = this.Cvs;
-            Cvs.Children.Add(myR.myRect);
+            myRectangleTwo myRectangle = new myRectangleTwo();
+            myRectangle.myCvs = this.Cvs;
+            Cvs.Children.Add(myRectangle.myRect);
         }
 
         void changeStateLineRectangle()
@@ -45,20 +47,22 @@ namespace RectLine
             myRectangle.IsRectState = false;
         }
 
+        
+
         private void btnLine_Click(object sender, RoutedEventArgs e)
         {
-            stateLine = 1;
+            stateLine = (int)EStates.LineOne;
             changeStateLineRectangle();
         }
         private void btnLine2_Click(object sender, RoutedEventArgs e)
         {
-            stateLine = 2;
+            stateLine = (int)EStates.LineTwo;
             changeStateLineRectangle();
         }
 
         private void btnLine3_Click(object sender, RoutedEventArgs e)
         {
-            stateLine = 3;
+            stateLine = (int)EStates.LineTree;
             changeStateLineRectangle();
         }
        
@@ -68,18 +72,21 @@ namespace RectLine
             if (IsDrawLine)
             {
                 myLine myL=null;
-                if (stateLine == 1)
+
+                switch (stateLine)                
                 { 
-                   myL = new myLineOne();
+                    case 1: 
+                        myL = new myLineOne();
+                        break;
+                    case 2: 
+                        myL = new myLineTwo();
+                        break;
+
+                    default:
+                        myL = new myLineTree();
+                        break;
                 }
-                else if  (stateLine == 2)
-                {
-                    myL = new myLineTwo();
-                }
-                else if (stateLine == 3)
-                {
-                    myL = new myLineTree();
-                }
+
                 myL.RectOne = returnRectangle(e);
                 Cvs.MouseMove += myL.onMouseMove;
                 if (returnRectangle(e) != null)
@@ -113,8 +120,10 @@ namespace RectLine
                     double rTop = Canvas.GetTop((Rectangle)Cvs.Children[i]);
                     double rWidht = ((Rectangle)Cvs.Children[i]).Width;
                     double rHeight = ((Rectangle)Cvs.Children[i]).Height;
-
-                    if (mouseX >= rLeft && mouseX <= rLeft + rWidht && mouseY >= rTop && mouseY <= rTop + rHeight)
+                    bool bInsideByX = mouseX >= rLeft && mouseX <= rLeft + rWidht;
+                    bool bInsideByY = mouseY >= rTop && mouseY <= rTop + rHeight;
+                    
+                    if (bInsideByX && bInsideByY)
                     {
                         mouseRect = (Rectangle)Cvs.Children[i];
                         IsHaveRectangle = true;
